@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.6
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -13,6 +13,6 @@ RUN pip install -r requirements.txt
 
 COPY . /app/
 
-EXPOSE 8081
+EXPOSE 80
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8081"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
