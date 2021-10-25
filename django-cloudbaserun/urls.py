@@ -19,9 +19,9 @@ from django.conf.urls import url
 
 urlpatterns = (
     # Create Or Update
-    url(r'^user/$', views.create_or_update),
+    url(r'^user(/)?$', views.create_or_update),
 
     # Query Or Delete
-    url(r'^user/([0-9]+)/$', views.query_or_delete),
+    url(r'^user/([0-9]+)(/)?$', views.query_or_delete),
 
 )
