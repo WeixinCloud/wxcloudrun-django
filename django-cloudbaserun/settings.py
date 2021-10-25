@@ -63,15 +63,11 @@ WSGI_APPLICATION = 'django-cloudbaserun.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cbr',
-        # 'USER': os.environ.get("MYSQL_USERNAME"),
-        'USER': 'root',
-        # 'HOST': os.environ.get("MYSQL_ADDRESS").split(':')[0],
-        'HOST': '127.0.0.1',
-        # 'PORT': os.environ.get("MYSQL_ADDRESS").split(':')[1],
-        'PORT': 3306,
-        # 'PASSWORD': os.environ.get("MYSQL_PASSWORD"),
-        'PASSWORD': '121101mxf',
+        'NAME': 'django_demo',
+        'USER': os.environ.get("MYSQL_USERNAME"),
+        'HOST': os.environ.get("MYSQL_ADDRESS").split(':')[0],
+        'PORT': os.environ.get("MYSQL_ADDRESS").split(':')[1],
+        'PASSWORD': os.environ.get("MYSQL_PASSWORD"),
         'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
