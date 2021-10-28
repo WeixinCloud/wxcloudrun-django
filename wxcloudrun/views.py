@@ -3,11 +3,11 @@ import json
 from django.http import HttpResponse
 from django.http import JsonResponse
 
-from cloudbaserun.models import User
+from wxcloudrun.models import User
 from django.forms.models import model_to_dict
 
 
-def create_or_update(request):
+def create_or_update(request, _):
     if request.method == 'POST' or request.method == 'post':
         return create(request)
 
@@ -104,7 +104,7 @@ def delete_by_id(request, id):
                             content_type='application/json')
 
 
-def query_or_delete(request, id):
+def query_or_delete(request, id, _):
     print("=======query_or_delete=======")
     if request.method == 'DELETE' or request.method == 'delete':
         return delete_by_id(request, id)
