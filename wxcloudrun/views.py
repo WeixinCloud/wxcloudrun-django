@@ -8,6 +8,12 @@ from django.forms.models import model_to_dict
 
 
 def create_or_update(request, _):
+    """
+    创建或者更新用户
+
+     `` request `` 请求对象
+    """
+
     if request.method == 'POST' or request.method == 'post':
         try:
             res = create(request)
@@ -29,7 +35,12 @@ def create_or_update(request, _):
 
 
 def query_or_delete(request, id, _):
-    print("=======query_or_delete=======")
+    """
+    查询或者删除用户
+
+    `` request `` 请求对象
+    ``id`` 用户ID
+    """
     if request.method == 'DELETE' or request.method == 'delete':
         try:
             res = delete_by_id(request, id)
@@ -48,7 +59,14 @@ def query_or_delete(request, id, _):
     resp = {'code': 10000, 'errorMsg': '请求方式错误'}
     return HttpResponse(json.dumps(resp), reason='Http Method Error', content_type='application/json')
 
+
 def create(request):
+    """
+    创建用户
+
+    `` request `` 请求对象
+    """
+
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
@@ -82,6 +100,13 @@ def create(request):
 
 
 def get_user_by_id(request, uid):
+    """
+    根据用户ID查询用户
+
+    `` request `` 请求对象
+    ``uid`` 用户ID
+    """
+
     if request.method == 'GET' or request.method == 'get':
         try:
             user = User.objects.get(id=uid)
@@ -97,6 +122,12 @@ def get_user_by_id(request, uid):
 
 
 def update_by_id(request):
+    """
+    根据用户ID更新用户
+
+    `` request `` 请求对象
+    """
+
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
@@ -128,6 +159,13 @@ def update_by_id(request):
 
 
 def delete_by_id(request, id):
+    """
+    根据用户ID删除用户
+
+    `` id `` 用户ID
+    `` request `` 请求对象
+    """
+
     if request.method == 'DELETE' or request.method == 'delete':
         user = User.objects.get(id=id)
         user.delete()
