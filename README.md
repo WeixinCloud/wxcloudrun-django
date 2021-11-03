@@ -27,7 +27,7 @@
   
 * 请求示例：
 ```
-curl -X GET  http://{ip}:{port}/user/1
+curl -X GET  http://{ip}:{port}/user/34
 ```
 
 * 响应示例：
