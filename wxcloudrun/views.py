@@ -147,7 +147,7 @@ def update_by_id(request):
     if 'name' in body:
         user.name = body['name']
     if 'age' in body:
-        user.age = body
+        user.age = body['age']
     if 'email' in body:
         user.email = body['email']
     if 'phone' in body:
