@@ -18,10 +18,9 @@ from wxcloudrun import views
 from django.conf.urls import url
 
 urlpatterns = (
-    # Create Or Update
-    url(r'^user(/)?$', views.create_or_update),
-
     # Query Or Delete
-    url(r'^user/([0-9]+)(/)?$', views.query_or_delete),
+    url(r'^api/todos/([0-9]+)(/)?$', views.match_uri_with_id),
 
+    # GetAll、Create Or Update
+    url(r'^api/todos(/)?$', views.match_uri_no_id),
 )

@@ -4,18 +4,15 @@ from django.db import models
 
 
 # Create your models here.
-class User(models.Model):
+class ToDoList(models.Model):
     id = models.AutoField
-    name = models.CharField(max_length=64, default='')
-    age = models.IntegerField(default=0)
-    email = models.CharField(max_length=64, default='')
-    phone = models.CharField(max_length=64, default='')
-    description = models.CharField(max_length=128, default='')
+    title = models.CharField(max_length=64, default='')
+    status = models.CharField(max_length=64, default='')
     create_time = models.DateTimeField(default=datetime.now(), )
     update_time = models.DateTimeField(default=datetime.now(),)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
-        db_table = 'user'
+        db_table = 'todo_list'
