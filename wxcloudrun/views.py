@@ -3,6 +3,8 @@ import traceback
 
 from django.http import JsonResponse
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from wxcloudrun.models import ToDoList
 from django.forms.models import model_to_dict
 
@@ -14,35 +16,25 @@ def match_uri_no_id(request, _):
      `` request `` 请求对象
     """
 
-    if request.method == 'GET' or request.method == 'get':
-        try:
-            res = get_todo_list(request)
-            return res
-        except Exception as e:
-            print(traceback.format_exc())
-            return JsonResponse({'code': -1, 'errorMsg': '获取todo list异常: {} '.format(str(e))},
+    try:
+        if request.method == 'GET' or request.method == 'get':
+            return get_todo_list(request)
+        elif request.method == 'POST' or request.method == 'post':
+            return create_todo(request)
+        elif request.method == 'PUT' or request.method == 'put':
+            return update_todo_by_id(request)
+        else:
+            return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                                 json_dumps_params={'ensure_ascii': False})
-    
-    elif request.method == 'POST' or request.method == 'post':
-        try:
-            res = create_todo(request)
-            return res
-        except Exception as e:
-            print(traceback.format_exc())
-            return JsonResponse({'code': -1, 'errorMsg': '创建todo异常: {} '.format(str(e))}, 
-                                json_dumps_params={'ensure_ascii': False})
+    except ObjectDoesNotExist as e:
+        print(traceback.format_exc())
+        return JsonResponse({'code': -1, 'errorMsg': '数据不存在: {} '.format(str(e))},
+                            json_dumps_params={'ensure_ascii': False})
+    except Exception as e:
+        print(traceback.format_exc())
+        return JsonResponse({'code': -1, 'errorMsg': '请求异常: {} '.format(str(e))},
+                            json_dumps_params={'ensure_ascii': False})
 
-    elif request.method == 'PUT' or request.method == 'put':
-        try:
-            res = update_todo_by_id(request)
-            return res
-        except Exception as e:
-            print(traceback.format_exc())
-            return JsonResponse({'code': -1, 'errorMsg': '更新todo异常: {} '.format(str(e))},
-                                json_dumps_params={'ensure_ascii': False})
-
-    return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
-                        json_dumps_params={'ensure_ascii': False})
 
 
 def match_uri_with_id(request, id, _):
@@ -52,25 +44,22 @@ def match_uri_with_id(request, id, _):
     `` request `` 请求对象
     ``id`` todoID
     """
-    if request.method == 'DELETE' or request.method == 'delete':
-        try:
-            res = delete_todo_by_id(request, id)
-            return res
-        except Exception as e:
-            print(traceback.format_exc())
-            return JsonResponse({'code': 0, 'errorMsg': '删除todo异常: {} '.format(str(e))},
+    try:
+        if request.method == 'DELETE' or request.method == 'delete':
+            return delete_todo_by_id(request, id)
+        elif request.method == 'GET' or request.method == 'get':
+            return get_todo_by_id(request, id)
+        else: 
+            return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                                 json_dumps_params={'ensure_ascii': False})
-    elif request.method == 'GET' or request.method == 'get':
-        try:
-            res = get_todo_by_id(request, id)
-            return res
-        except Exception as e:
-            print(traceback.format_exc())
-            return JsonResponse({'code': -1, 'errorMsg': '获取todo异常: {} '.format(str(e))},
-                                json_dumps_params={'ensure_ascii': False})
-
-    return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
-                        json_dumps_params={'ensure_ascii': False})
+    except ObjectDoesNotExist as e:
+        print(traceback.format_exc())
+        return JsonResponse({'code': -1, 'errorMsg': '数据不存在: {} '.format(str(e))},
+                            json_dumps_params={'ensure_ascii': False})
+    except Exception as e:
+        print(traceback.format_exc())
+        return JsonResponse({'code': -1, 'errorMsg': '请求异常: {} '.format(str(e))},
+                            json_dumps_params={'ensure_ascii': False})
 
 
 def get_todo_list(request):
@@ -103,20 +92,20 @@ def create_todo(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
-    baseErrResp = {'code': -1}
+    base_err_resp = {'code': -1}
 
     todo = ToDoList()
-    paramValid = True
+    param_valid = True
     if 'title' not in body:
-        baseErrResp['errorMsg'] = '缺少title参数'
-        paramValid = False
+        base_err_resp['errorMsg'] = '缺少title参数'
+        param_valid = False
 
-    if paramValid and 'status' not in body:
-        baseErrResp['errorMsg'] = '缺少status参数'
-        paramValid = False
+    if param_valid and 'status' not in body:
+        base_err_resp['errorMsg'] = '缺少status参数'
+        param_valid = False
 
-    if not paramValid:
-        return JsonResponse(baseErrResp,
+    if not param_valid:
+        return JsonResponse(base_err_resp,
                             json_dumps_params={'ensure_ascii': False})
 
     todo.title = body['title']
@@ -153,14 +142,14 @@ def update_todo_by_id(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
-    baseErrResp = {'code': -1}
+    base_err_resp = {'code': -1}
     if 'id' not in body:
-        baseErrResp['errorMsg'] = '缺少id参数'
-        return JsonResponse(baseErrResp, json_dumps_params={'ensure_ascii': False})
+        base_err_resp['errorMsg'] = '缺少id参数'
+        return JsonResponse(base_err_resp, json_dumps_params={'ensure_ascii': False})
 
     if 'title' not in body and 'status' not in body:
-        baseErrResp['errorMsg'] = '缺少要更新的目标参数'
-        return JsonResponse(baseErrResp, json_dumps_params={'ensure_ascii': False})
+        base_err_resp['errorMsg'] = '缺少要更新的目标参数'
+        return JsonResponse(base_err_resp, json_dumps_params={'ensure_ascii': False})
 
     todo = ToDoList.objects.get(id=body['id'])
 
