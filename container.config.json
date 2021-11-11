@@ -11,8 +11,8 @@
 	"initialDelaySeconds": 2,                        // 容器启动后延迟多久开始健康检查。默认值2秒。
 	"dataBaseName":"django_demo",
 	"executeSQLs":[
-		"CREATE DATABASE django_demo;",
+		"CREATE DATABASE IF NOT EXISTS django_demo;",
 		"USE django_demo;",
-		"CREATE TABLE `todo_list` (`id` int(32) NOT NULL AUTO_INCREMENT, `title` varchar(256) NOT NULL DEFAULT '', `status` varchar(64) NOT NULL DEFAULT '', `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
-	]
+		"CREATE TABLE IF NOT EXISTS `todo_list` (`id` int(32) NOT NULL AUTO_INCREMENT, `title` varchar(256) NOT NULL DEFAULT '', `status` varchar(64) NOT NULL DEFAULT '', `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;"
+	]    
 }

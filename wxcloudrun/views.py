@@ -2,11 +2,9 @@ import json
 import traceback
 
 from django.http import JsonResponse
-
-from django.core.exceptions import ObjectDoesNotExist
-
 from wxcloudrun.models import ToDoList
 from django.forms.models import model_to_dict
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def match_uri_no_id(request, _):
@@ -26,7 +24,7 @@ def match_uri_no_id(request, _):
         else:
             return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                                 json_dumps_params={'ensure_ascii': False})
-    except Exception as e:
+    except ObjectDoesNotExist as e:
         print(traceback.format_exc())
         return JsonResponse({'code': -1, 'errorMsg': '请求异常: {} '.format(str(e))},
                             json_dumps_params={'ensure_ascii': False})
@@ -48,7 +46,7 @@ def match_uri_with_id(request, id, _):
         else:
             return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                                 json_dumps_params={'ensure_ascii': False})
-    except Exception as e:
+    except ObjectDoesNotExist as e:
         print(traceback.format_exc())
         return JsonResponse({'code': -1, 'errorMsg': '请求异常: {} '.format(str(e))},
                             json_dumps_params={'ensure_ascii': False})
