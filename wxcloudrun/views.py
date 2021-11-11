@@ -26,10 +26,6 @@ def match_uri_no_id(request, _):
         else:
             return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                                 json_dumps_params={'ensure_ascii': False})
-    except ObjectDoesNotExist as e:
-        print(traceback.format_exc())
-        return JsonResponse({'code': -1, 'errorMsg': '数据不存在: {} '.format(str(e))},
-                            json_dumps_params={'ensure_ascii': False})
     except Exception as e:
         print(traceback.format_exc())
         return JsonResponse({'code': -1, 'errorMsg': '请求异常: {} '.format(str(e))},
@@ -49,13 +45,9 @@ def match_uri_with_id(request, id, _):
             return delete_todo_by_id(request, id)
         elif request.method == 'GET' or request.method == 'get':
             return get_todo_by_id(request, id)
-        else: 
+        else:
             return JsonResponse({'code': -1, 'errorMsg': '请求方式错误'},
                                 json_dumps_params={'ensure_ascii': False})
-    except ObjectDoesNotExist as e:
-        print(traceback.format_exc())
-        return JsonResponse({'code': -1, 'errorMsg': '数据不存在: {} '.format(str(e))},
-                            json_dumps_params={'ensure_ascii': False})
     except Exception as e:
         print(traceback.format_exc())
         return JsonResponse({'code': -1, 'errorMsg': '请求异常: {} '.format(str(e))},
@@ -112,7 +104,7 @@ def create_todo(request):
     todo.status = body['status']
 
     todo.save()
-    return JsonResponse({'code': 0, 'errorMsg': '创建成功'}, 
+    return JsonResponse({'code': 0, 'errorMsg': '创建成功'},
                         json_dumps_params={'ensure_ascii': False})
 
 
@@ -159,7 +151,7 @@ def update_todo_by_id(request):
         todo.status = body['status']
 
     todo.save()
-    return JsonResponse({'code': 0, 'errorMsg': '更新成功'}, 
+    return JsonResponse({'code': 0, 'errorMsg': '更新成功'},
                         json_dumps_params={'ensure_ascii': False})
 
 
