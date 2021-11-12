@@ -23,4 +23,7 @@ urlpatterns = (
 
     # GetAll、Create Or Update
     url(r'^api/todos(/)?$', views.match_uri_no_id),
+
+    # index
+    url(r'(/)?$', views.index),
 )
