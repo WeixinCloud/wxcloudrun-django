@@ -15,4 +15,4 @@ class ToDoList(models.Model):
         return self.title
 
     class Meta:
-        db_table = 'todo_list'
+        db_table = 'todo_list' #数据库表名

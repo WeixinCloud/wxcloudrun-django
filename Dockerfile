@@ -12,7 +12,8 @@ WORKDIR /install
 COPY requirements.txt /requirements.txt
 
 # 安装依赖到指定的/install文件夹
-RUN pip install --install-option="--prefix=/install" -r /requirements.txt
+RUN pip install --upgrade pip \
+&& pip install --prefix=/install -r /requirements.txt
 
 # 选择基础镜像
 FROM python:3.7.3-alpine
@@ -26,8 +27,8 @@ COPY . /app
 # 设定当前的工作目录
 WORKDIR /app
 
-# 设定启动命令
-ENTRYPOINT ["python3", "manage.py", "runserver", "0.0.0.0:80"]
-
 # 设定对外端口
 EXPOSE 80
+
+# 设定启动命令
+ENTRYPOINT ["python3", "manage.py", "runserver", "0.0.0.0:80"]
