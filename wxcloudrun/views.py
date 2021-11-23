@@ -8,6 +8,7 @@ from wxcloudrun.models import Counters
 
 logger = logging.getLogger('log')
 
+
 def index(request, _):
     """
     获取主页
@@ -85,4 +86,3 @@ def update_count(request):
     else:
         return JsonResponse({'code': -1, 'errorMsg': 'action参数错误'},
                     json_dumps_params={'ensure_ascii': False})
-
