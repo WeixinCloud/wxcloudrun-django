@@ -2,33 +2,16 @@
 [![GitHub license](https://img.shields.io/github/license/WeixinCloud/wxcloudrun-express)](https://github.com/WeixinCloud/wxcloudrun-express)
 ![GitHub package.json dependency version (prod)](https://img.shields.io/badge/python-3.7.3-green)
 
+微信云托管 python Django 框架模版，实现简单的计数器读写接口，使用云托管 MySQL 读写、记录计数值。
 
-## 简介
-微信云托管 django 框架模版，使用 python 的 django 框架创建简单的 http 服务。通过示例创建一张 todo_list 表，并对其进行增删改查的操作，对应 POST/DELETE/PUT/GET 四种请求的实现。
+![](https://qcloudimg.tencent-cloud.cn/raw/be22992d297d1b9a1a5365e606276781.png)
 
-![](https://qcloudimg.tencent-cloud.cn/raw/3159427f92e66f3bd431c21e25f18793.png)
-
-
-## 详细介绍
-
-1. 本示例中，使用的是 django 3.2.7，通过 80 端口对外。
-   * 如需修改端口号，请到 Dockerfile 中修改。
-   * 修改端口号之后，如果使用流水线部署版本，请确保 container.config.json 中的 containerPort 字段也同步修改；如果在微信云托管控制台手动「新建版本」，请确保监听端口字段与代码中端口号保持一致，否则会引发部署失败。
-2. 在微信云托管控制台一键部署本示例，会同时自动开通环境内的 MySQL 服务并完成初始化，后续可直接使用。数据库的地址、帐号、密码会被作为环境变量默认注入，settings.py中直接引用。
-   * 如不想使用微信云托管自带的 MySQL，请手动修改 settings.py 中数据库信息并在微信云托管控制台注销 MySQL。
-   * 未通过一键部署按钮，而是直接使用本示例的代表进行部署，需要手动在微信云托管控制台中开通MySQL，且数据库信息不会默认注入。在新建版本时需要手动将数据库信息作为环境变量填入。
-3. 基于示例二次开发操作步骤：
-   * 在微信云托管控制台一键部署，完成服务创建、MySQL初始化、首个版本部署上线。
-   * fork示例代码到自己的代码仓库，在此基础上进行二次开发。
-   * 服务的第二个及后续版本，基于自己的代码仓库进行部署。
-4. 代码仓库中的 container.config.json 文件仅用于在微信云托管中创建流水线。如果不使用流水线，而是用本项目的代码在微信云托管控制台手动「新建版本」，则 container.config.json 配置文件不生效。最终版本部署效果以「新建版本」窗口中手动填写的值为准。
 
 ## 快速开始
 前往 [微信云托管快速开始页面](https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/src/basic/guide.html)，选择相应语言的模板，根据引导完成部署。
 
 
-## 目录结构
-
+## 目录结构说明
 ~~~
 .
 ├── Dockerfile                  dockerfile
@@ -49,139 +32,77 @@
     └── wsgi.py                 自动生成文件wsgi.py, Web服务网关接口
 ~~~
 
-## 示例API列表
 
-1 查询所有 todo 项
+## 服务 API 文档
 
-* URL路径：
-  ```/api/todos```
-  
-* 请求示例：
-```
-curl -X GET  http://{ip}:{port}/api/todos
-```
+### `GET /api/count`
 
-* 响应示例：
-```
+获取当前计数
+
+#### 请求参数
+
+无
+
+#### 响应结果
+
+- `code`：错误码
+- `data`：当前计数值
+
+##### 响应结果示例
+
+```json
 {
   "code": 0,
-  "errorMsg": "",
-  "data": [{
-    "id": 1,
-    "title": "工作1",
-    "status": "准备中",
-    "create_time": "2021-11-09T08:45:40Z",
-    "update_time": "2021-11-09T08:45:40Z"
-  }, {
-    "id": 2,
-    "title": "工作2",
-    "status": "已开始",
-    "create_time": "2021-11-09T08:46:11Z",
-    "update_time": "2021-11-09T08:46:11Z"
-  }]
+  "data": 42
 }
 ```
 
+#### 调用示例
 
-2 根据ID查询 todo 项
-
-* URL路径：
-  ```/api/todos/:id```
-  
-* 请求示例：
 ```
-curl -X GET  http://{ip}:{port}/api/todos/1
+curl https://<云托管服务域名>/api/count
 ```
 
-* 响应示例：
+
+
+### `POST /api/count`
+
+更新计数，自增或者清零
+
+#### 请求参数
+
+- `action`：`string` 类型，枚举值
+  - 等于 `"inc"` 时，表示计数加一
+  - 等于 `"clear"` 时，表示计数重置（清零）
+
+##### 请求参数示例
+
 ```
 {
-  "code": 0,
-  "errorMsg": "",
-  "data": {
-    "id": 1,
-    "title": "工作1",
-    "status": "准备中",
-    "create_time": "2021-11-09T08:45:40Z",
-    "update_time": "2021-11-09T08:45:40Z"
-  }
+  "action": "inc"
 }
 ```
 
+#### 响应结果
 
-3 新增 todo 项目
+- `code`：错误码
+- `data`：当前计数值
 
-* URL路径：
-  ```/api/todos```
-  
-* 请求示例：
-```
-curl http://{ip}:{port}/api/todos \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{  
-    "title":"工作1",
-    "status":"准备中"
-  }'
-```
+##### 响应结果示例
 
-* 响应示例：
-```
+```json
 {
   "code": 0,
-  "errorMsg": "",
-  "data": {
-    "id": 1,
-    "title": "工作1",
-    "status": "准备中",
-    "create_time": "2021-11-09T08:45:40Z",
-    "update_time": "2021-11-09T08:45:40Z"
-  }
+  "data": 42
 }
 ```
 
-4 根据ID修改 todo 项目
+#### 调用示例
 
-* URL路径：
-  ```/api/todos```
-  
-* 请求示例：
 ```
-curl http://{ip}:{port}/api/todos \
-  -X PUT \
-  -H 'Content-Type: application/json' \
-  -d '{  
-    "id":1,
-    "status":"已完成"
-  }'
+curl -X POST -H 'content-type: application/json' -d '{"action": "inc"}' https://<云托管服务域名>/api/count
 ```
 
-* 响应示例：
-```
-{
-  "code": 0,
-  "errorMsg": ""
-}
-```
+## License
 
-5 根据ID删除 todo 项
-
-* URL路径：
-  ```/api/todos/:id```
-  
-* 请求示例：
-```
-curl http://{ip}:{port}/api/todos/1 \
-  -X DELETE \
-  -H 'Content-Type: application/json' \
-  -d '{   }'
-```
-
-* 响应示例：
-```
-{
-  "code": 0,
-  "errorMsg": ""
-}
-```
-
+[MIT](./LICENSE)
