@@ -68,21 +68,24 @@ def update_count(request):
         return JsonResponse({'code': -1, 'errorMsg': '缺少action参数'},
                             json_dumps_params={'ensure_ascii': False})
 
-    try:
-        data = Counters.objects.get(id=1)
-    except Counters.DoesNotExist:
-        data = Counters()
-
     if body['action'] == 'inc':
+        try:
+            data = Counters.objects.get(id=1)
+        except Counters.DoesNotExist:
+            data = Counters()
         data.id = 1
         data.count += 1
         data.save()
         return JsonResponse({'code': 0, "data": data.count},
                     json_dumps_params={'ensure_ascii': False})
     elif body['action'] == 'clear':
-        data.delete()
+        try:
+            data = Counters.objects.get(id=1)
+            data.delete()
+        except Counters.DoesNotExist:
+            logger.info('record not exist')
         return JsonResponse({'code': 0, 'data': 0},
-                            json_dumps_params={'ensure_ascii': False})
+                                json_dumps_params={'ensure_ascii': False})
     else:
         return JsonResponse({'code': -1, 'errorMsg': 'action参数错误'},
                     json_dumps_params={'ensure_ascii': False})
