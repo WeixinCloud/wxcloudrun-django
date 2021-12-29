@@ -15,7 +15,10 @@ COPY . /app
 WORKDIR /app
 
 # 安装依赖到指定的/install文件夹
-RUN pip install --upgrade pip \
+# 选用国内镜像源以提高下载速度
+RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple \
+&& pip config set global.trusted-host mirrors.cloud.tencent.com \
+&& pip install --upgrade pip \
 && pip install --user -r requirements.txt
 
 # 设定对外端口
