@@ -4,8 +4,9 @@
 # 选择基础镜像
 FROM alpine:3.13
 
-# 安装 python3
-RUN apk add --update --no-cache python3 py3-pip \
+# 选用国内镜像源以提高下载速度
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
+&& apk add --update --no-cache python3 py3-pip \
 && rm -rf /var/cache/apk/*
 
 # 拷贝当前项目到/app目录下
