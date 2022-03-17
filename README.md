@@ -16,7 +16,7 @@
 .
 ├── Dockerfile                  dockerfile
 ├── README.md                   README.md文件
-├── container.config.json       微信云托管流水线配置
+├── container.config.json       模板部署「服务设置」初始化配置（二开请忽略）
 ├── manage.py                   django项目管理文件 与项目进行交互的命令行工具集的入口
 ├── requirements.txt            依赖包文件
 └── wxcloudrun                  app目录
