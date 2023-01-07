@@ -27,10 +27,14 @@ RUN pip config set global.index-url http://mirrors.cloud.tencent.com/pypi/simple
     # pip install scipy 等数学包失败，可使用 apk add py3-scipy 进行， 参考安装 https://pkgs.alpinelinux.org/packages?name=py3-scipy&branch=v3.13
     && pip install --user -r requirements.txt
 
+# 创建nginx写入pid的默认目录(默认在/run/nginx/nginx.pid保存nginx进程的pid)
+RUN mkdir /run/nginx
+
+# 拷贝nginx配置文件到默认位置
 COPY default.conf /etc/nginx/http.d
+
 # 拷贝当前项目到/app目录下(.dockerignore中文件除外)
 COPY . /app
-RUN sed -i 's/\r//' ./start.sh && chmod +x ./start.sh && mkdir /run/nginx
 
 # 暴露端口
 # 此处端口必须与「服务设置」-「流水线」以及「手动上传代码包」部署时填写的端口一致，否则会部署失败。
