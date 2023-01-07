@@ -11,7 +11,7 @@ RUN apk add ca-certificates
 
 # 选用国内镜像源以提高下载速度
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
-    && apk add --no-cache python3=3.8.15-r0 py3-pip=20.3.4-r0 uwsgi=2.0.19.1-r1 uwsgi-python3=2.0.19.1-r1 nginx=1.18.0-r15 \
+    && apk add --no-cache python3 py3-pip uwsgi uwsgi-python3 nginx \
     && rm -rf /var/cache/apk/*
 
 # 设定当前的工作目录
