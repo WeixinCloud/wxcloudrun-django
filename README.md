@@ -2,7 +2,7 @@
 [![GitHub license](https://img.shields.io/github/license/WeixinCloud/wxcloudrun-express)](https://github.com/WeixinCloud/wxcloudrun-express)
 ![GitHub package.json dependency version (prod)](https://img.shields.io/badge/python-3.7.3-green)
 
-微信云托管 python Django 框架模版，实现简单的计数器读写接口，使用云托管 MySQL 读写、记录计数值。
+微信云托管 python Django 框架模板，实现简单的计数器读写接口，使用云托管 MySQL 读写、记录计数值。
 
 ![](https://qcloudimg.tencent-cloud.cn/raw/be22992d297d1b9a1a5365e606276781.png)
 
@@ -35,7 +35,7 @@
     ├── migrations              数据移植（迁移）模块
     ├── models.py               数据模块
     ├── settings.py             项目的总配置文件  里面包含数据库 web应用 日志等各种配置
-    ├── templates               模版目录,包含主页index.html文件
+    ├── templates               模板目录,包含主页index.html文件
     ├── urls.py                 URL配置文件  Django项目中所有地址中（页面）都需要我们自己去配置其URL
     ├── views.py                执行响应的代码所在模块  代码逻辑处理主要地点  项目大部分代码在此编写
     └── wsgi.py                 自动生成文件wsgi.py, Web服务网关接口
