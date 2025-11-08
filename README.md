@@ -3,9 +3,12 @@
 ![GitHub package.json dependency version (prod)](https://img.shields.io/badge/python-3.7.3-green)
 
 微信云托管 python Django 框架模版，实现简单的计数器读写接口，使用云托管 MySQL 读写、记录计数值。
-
+本仓库在原模板的基础上添加了适合生产环境的uwsgi+nginx的部署方案。
 ![](https://qcloudimg.tencent-cloud.cn/raw/be22992d297d1b9a1a5365e606276781.png)
 
+
+## uwsgi+nginx部署方案介绍
+打开`./start.sh`，从该文件出发理解部署思路。Dockerfile最后一行CMD命令已经由`python3 manage.py runserver 0.0.0.0:80`改为`./start.sh`，执行该shell文件的解析器在文件第一行已经指定为`/bin/sh`。如果部署失败，在`./logs`目录下检查`uwsgi.log`和`nginx_error.log`以发现问题。参见[Docker教程|菜鸟教程](https://www.runoob.com/docker/docker-tutorial.html)和[uwsgi中文文档](https://uwsgi-docs-zh.readthedocs.io/zh_CN/latest/WSGIquickstart.html)。
 
 ## 快速开始
 前往 [微信云托管快速开始页面](https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/src/basic/guide.html)，选择相应语言的模板，根据引导完成部署。
